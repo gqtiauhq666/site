@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>中华人民共和国中央人民政府门户网站 — gov.cn</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Microsoft YaHei','微软雅黑',SimSun,'宋体',Arial,sans-serif;font-size:14px;color:#333;background:#e8e8e8;line-height:1.5}
+a{color:#003399;text-decoration:none}
+a:hover{color:#CC0000;text-decoration:underline}
+
+/* TOPBAR */
+.topbar{background:#f5f5f5;border-bottom:1px solid #ccc;font-size:12px}
+.topbar-inner{max-width:1200px;margin:0 auto;padding:4px 10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px}
+.topbar a{color:#555}
+.topbar a:hover{color:#CC0000;text-decoration:none}
+.tb-sep{color:#ccc;margin:0 4px}
+#clock{font-weight:bold;color:#222}
+
+/* HEADER */
+.site-header{background:#CC0000}
+.header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 10px;gap:16px}
+.logo-area{display:flex;align-items:center;gap:14px}
+.emblem{width:72px;height:72px;flex-shrink:0}
+.title-cn{font-size:clamp(18px,2.5vw,26px);font-weight:bold;letter-spacing:3px;color:#FFD700;text-shadow:1px 2px 4px rgba(0,0,0,.4);line-height:1.1}
+.title-en{font-size:11px;letter-spacing:2px;color:#FFE87A;margin-top:3px;text-transform:uppercase}
+.title-sub{font-size:10px;color:#FFD70088;letter-spacing:1px;margin-top:2px}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+.hdr-stars{color:#FFD700;font-size:18px;letter-spacing:5px}
+.search-bar{display:flex;border:1px solid #FFD700;border-radius:2px;overflow:hidden}
+.search-bar input{border:none;outline:none;padding:5px 10px;font-size:12px;width:180px}
+.search-bar button{background:#FFD700;border:none;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:bold;color:#7a0000}
+.search-bar button:hover{background:#FFC200}
+
+/* NAV */
+.main-nav{background:#8B0000;border-top:2px solid #FFD700;border-bottom:2px solid #FFD700}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap}
+.main-nav a{color:#fff;padding:9px 18px;font-size:13px;font-weight:bold;display:block;border-right:1px solid rgba(255,255,255,.15);transition:background .15s;letter-spacing:1px}
+.main-nav a:hover,.main-nav a.active{background:#CC0000;color:#FFD700;text-decoration:none}
+.nav-alert{margin-left:auto;background:#6a0000 !important}
+
+/* TICKER */
+.ticker-wrap{background:#fff;border-bottom:2px solid #CC0000;padding:5px 0}
+.ticker-inner{max-width:1200px;margin:0 auto;padding:0 10px;display:flex;align-items:center;gap:10px;overflow:hidden}
+.ticker-label{background:#CC0000;color:#fff;font-size:11px;font-weight:bold;padding:2px 8px;white-space:nowrap;flex-shrink:0;letter-spacing:1px}
+.ticker-track{overflow:hidden;flex:1;position:relative}
+.ticker-scroll{display:inline-block;white-space:nowrap;animation:tick 50s linear infinite;font-size:13px}
+.ticker-scroll a{color:#222;margin:0 28px}
+.ticker-scroll a:hover{color:#CC0000}
+@keyframes tick{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
+
+/* GRID */
+.page-wrap{max-width:1200px;margin:10px auto;padding:0 10px;display:grid;grid-template-columns:188px 1fr 218px;gap:10px}
+@media(max-width:900px){.page-wrap{grid-template-columns:1fr}.sidebar-l,.sidebar-r{display:none}}
+
+/* BOX */
+.box{background:#fff;border:1px solid #ddd;margin-bottom:10px}
+.box-hd{background:#CC0000;color:#FFD700;font-size:13px;font-weight:bold;padding:6px 10px;letter-spacing:1px;display:flex;align-items:center;justify-content:space-between}
+.box-hd .more{color:#FFE87A;font-size:11px;font-weight:normal;cursor:pointer}
+.box-hd .more:hover{color:#fff}
+.box-bd{padding:8px 10px}
+
+/* QUICK LINKS */
+.ql{list-style:none}
+.ql li{border-bottom:1px dashed #eee;padding:5px 0}
+.ql li:last-child{border-bottom:none}
+.ql a{font-size:12px;color:#333;display:flex;align-items:center;gap:5px}
+.ql a::before{content:'▶';color:#CC0000;font-size:9px;flex-shrink:0}
+.ql a:hover{color:#CC0000;text-decoration:none}
+
+/* WEATHER */
+.weather{text-align:center;padding:10px}
+.wc{font-size:11px;color:#999;letter-spacing:2px;margin-bottom:2px}
+.wt{font-size:36px;font-weight:bold;color:#CC0000;line-height:1}
+.wd{font-size:12px;color:#666;margin-top:4px}
+.we{font-size:11px;color:#999;margin-top:4px}
+
+/* STATS */
+.stat-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed #eee;font-size:12px}
+.stat-row:last-child{border-bottom:none}
+.sl{color:#666}.sv{color:#CC0000;font-weight:bold;font-family:monospace}
+
+/* PROGRESS */
+.prog-row{margin:7px 0}
+.prog-lbl{font-size:11px;color:#555;display:flex;justify-content:space-between;margin-bottom:3px}
+.prog-bar{height:6px;background:#eee;border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#CC0000,#FF4444);border-radius:3px}
+.prog-src{font-size:10px;color:#aaa;text-align:right;margin-top:5px}
+
+/* HERO */
+.hero{background:#fff;border:1px solid #ddd;margin-bottom:10px;display:grid;grid-template-columns:300px 1fr}
+.hero-img{background:linear-gradient(135deg,#8B0000 0%,#CC0000 50%,#8B0000 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#FFD700;gap:8px;padding:20px;position:relative;overflow:hidden;min-height:190px}
+.hero-img::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,215,0,.03) 0,rgba(255,215,0,.03) 1px,transparent 1px,transparent 12px)}
+.hi-label{font-size:10px;letter-spacing:3px;color:#FFE87Aaa;text-transform:uppercase;position:relative}
+.hi-seal{width:78px;height:78px;border:3px solid #FFD700;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;position:relative;box-shadow:0 0 20px rgba(255,215,0,.3)}
+.hi-stars{font-size:16px;letter-spacing:5px;position:relative}
+.hero-text{padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between}
+.hero-tag{display:inline-block;background:#CC0000;color:#fff;font-size:11px;padding:2px 7px;margin-bottom:8px;font-weight:bold;letter-spacing:1px}
+.hero-title{font-size:17px;font-weight:bold;color:#111;line-height:1.45;margin-bottom:8px}
+.hero-excerpt{font-size:12px;color:#555;line-height:1.75;flex:1}
+.hero-meta{font-size:11px;color:#999;margin-top:10px;display:flex;gap:14px;flex-wrap:wrap}
+
+/* TABS */
+.tabs-wrap{background:#fff;border:1px solid #ddd;margin-bottom:10px}
+.tab-hdrs{display:flex;border-bottom:2px solid #CC0000;background:#f8f8f8}
+.tab-btn{padding:8px 15px;font-size:13px;font-weight:bold;cursor:pointer;border:none;background:none;color:#333;border-right:1px solid #ddd;transition:background .15s;font-family:inherit}
+.tab-btn:hover{background:#fff3f3;color:#CC0000}
+.tab-btn.active{background:#CC0000;color:#FFD700}
+.tab-panel{display:none;padding:10px}
+.tab-panel.active{display:block}
+
+/* NEWS LIST */
+.nl{list-style:none}
+.nl li{display:flex;align-items:flex-start;gap:7px;padding:6px 0;border-bottom:1px dashed #eee;font-size:13px}
+.nl li:last-child{border-bottom:none}
+.nl li::before{content:'■';color:#CC0000;font-size:8px;margin-top:4px;flex-shrink:0}
+.nl a{color:#333}
+.nl a:hover{color:#CC0000}
+.nl .dt{color:#999;font-size:11px;white-space:nowrap;flex-shrink:0;margin-left:auto;padding-left:8px}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+
+/* BROADCAST */
+.broadcast{background:#fff;border:2px solid #CC0000;margin-bottom:10px;position:relative;overflow:hidden}
+.broadcast::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,#CC0000 0,#CC0000 10px,#FFD700 10px,#FFD700 20px);background-size:20px 4px;animation:stripe 0.6s linear infinite}
+@keyframes stripe{to{background-position:20px 0}}
+.bc-hd{background:#CC0000;color:#FFD700;text-align:center;padding:9px;font-size:14px;font-weight:bold;letter-spacing:3px;display:flex;align-items:center;justify-content:center;gap:12px}
+.pulse{width:10px;height:10px;background:#FFD700;border-radius:50%;animation:pd 1s ease-in-out infinite}
+@keyframes pd{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.55)}}
+.bc-body{padding:16px 20px;display:flex;align-items:center;gap:18px}
+.bc-seal{width:70px;height:70px;border:3px solid #CC0000;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:30px;color:#CC0000;box-shadow:0 0 14px rgba(204,0,0,.2)}
+.bc-text{flex:1}
+.bc-text h3{font-size:14px;color:#111;margin-bottom:6px;font-weight:bold}
+.bc-text p{font-size:12px;color:#555;line-height:1.75}
+.bc-text .warn{font-size:11px;color:#CC0000;font-weight:bold;margin-top:4px}
+.bc-btn-wrap{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:6px}
+.blink{font-size:10px;color:#CC0000;letter-spacing:2px;font-weight:bold;animation:bl .9s step-start infinite}
+@keyframes bl{50%{opacity:0}}
+.bc-btn{cursor:pointer;background:linear-gradient(145deg,#CC0000,#8B0000);color:#FFD700;border:2px solid #FFD700;padding:14px 24px;font-size:14px;font-weight:bold;letter-spacing:2px;border-radius:3px;font-family:inherit;box-shadow:0 4px 0 #5a0000,0 0 20px rgba(204,0,0,.35);transition:transform .08s,box-shadow .08s;position:relative;overflow:hidden;text-align:center}
+.bc-btn span{font-size:11px;font-weight:normal;letter-spacing:1px;display:block;margin-top:3px}
+.bc-btn::after{content:'';position:absolute;top:-50%;left:-60%;width:35%;height:200%;background:rgba(255,255,255,.15);transform:skewX(-20deg);animation:shim 2.2s ease-in-out infinite}
+@keyframes shim{0%{left:-60%}60%{left:130%}100%{left:130%}}
+.bc-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #5a0000,0 0 30px rgba(204,0,0,.5)}
+.bc-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #5a0000}
+.bc-ref{font-size:10px;color:#aaa;text-align:center;padding:6px 20px 10px;border-top:1px dashed #eee}
+.bc-ref a{color:#aaa}
+
+/* MINI IMAGE GRID */
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px}
+.mini-img{height:76px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:5px}
+.mini-cap{font-size:11px;color:#333;line-height:1.45}
+
+/* RIGHT SIDEBAR */
+.notice-list{list-style:none}
+.notice-list li{padding:5px 0;border-bottom:1px dashed #eee;font-size:12px;display:flex;align-items:flex-start;gap:4px}
+.notice-list li:last-child{border-bottom:none}
+.notice-list li::before{content:'◆';color:#CC0000;font-size:8px;margin-top:3px;flex-shrink:0}
+.notice-list a{color:#003399;font-size:12px}
+.notice-list a:hover{color:#CC0000}
+.nt{display:inline-block;background:#CC0000;color:#fff;font-size:9px;padding:0 4px;margin-right:3px;flex-shrink:0}
+
+/* LOGIN */
+.login-box{padding:10px}
+.login-box input{width:100%;border:1px solid #ddd;padding:6px 8px;font-size:12px;margin-bottom:6px;outline:none;font-family:inherit}
+.login-box input:focus{border-color:#CC0000}
+.login-row{display:flex;gap:6px}
+.login-row button{flex:1;background:#CC0000;color:#fff;border:none;padding:6px;font-size:12px;cursor:pointer;font-family:inherit;font-weight:bold}
+.login-row button:hover{background:#8B0000}
+.login-row .sec{background:#f5f5f5;color:#333;border:1px solid #ddd;font-weight:normal}
+.login-row .sec:hover{background:#e8e8e8}
+.login-links{display:flex;justify-content:space-between;margin-top:5px;font-size:11px}
+.login-links a{color:#666}
+
+/* FOOTER */
+footer{background:#2a2a2a;color:#aaa;margin-top:10px;border-top:3px solid #CC0000}
+.footer-links{max-width:1200px;margin:0 auto;padding:14px 10px 8px;display:flex;flex-wrap:wrap;gap:5px 18px;justify-content:center;font-size:12px}
+.footer-links a{color:#bbb}
+.footer-links a:hover{color:#FFD700}
+.fsep{color:#555}
+.footer-bottom{border-top:1px solid #444;text-align:center;padding:10px;font-size:11px;color:#666;max-width:1200px;margin:0 auto}
+.footer-bottom p{margin:3px 0}
+.f-stars{color:#CC0000;font-size:14px;letter-spacing:4px;margin-top:5px}
+
+/* NOTICE MODAL */
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:10000;display:flex;align-items:center;justify-content:center}
+.modal-box{background:#fff;border:3px solid #CC0000;width:480px;max-width:95vw}
+.modal-hd{background:#CC0000;color:#FFD700;padding:10px 16px;font-size:14px;font-weight:bold;letter-spacing:2px;display:flex;align-items:center;gap:8px}
+.modal-body{padding:18px 20px 8px}
+.modal-body h3{font-size:14px;margin-bottom:9px;color:#111}
+.modal-body p{font-size:12px;color:#555;line-height:1.8;margin-bottom:8px}
+.modal-body .sid{font-size:10px;color:#999;font-family:monospace}
+.modal-chk{display:flex;align-items:center;gap:6px;font-size:11px;color:#666;padding:6px 20px 8px}
+.modal-foot{padding:8px 20px 14px;display:flex;justify-content:flex-end;border-top:1px solid #eee}
+.modal-btn{background:#CC0000;color:#fff;border:none;padding:8px 24px;font-size:13px;font-weight:bold;cursor:pointer;font-family:inherit;letter-spacing:1px}
+.modal-btn:hover{background:#8B0000}
+
+/* VIDEO OVERLAY */
+#vid-overlay{
+  display:none;
+  position:fixed !important;
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+  background:#000 !important;
+  z-index:2147483647 !important;
+  cursor:none !important;
+  overflow:hidden !important;
+}
+#vid-overlay video{
+  display:block;
+  pointer-events:none;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  max-width:none;
+  max-height:none;
+  width:auto;
+  height:auto;
+}
+body.troll-active {
+  overflow:hidden !important;
+  height:100vh !important;
+  width:100vw !important;
+}
+</style>
+</head>
+<body>
+
+<!-- NOTICE MODAL -->
+<div id="modal">
+  <div class="modal-box">
+    <div class="modal-hd">★ &nbsp;重要安全提示 — SECURITY NOTICE</div>
+    <div class="modal-body">
+      <h3>《网络安全法》用户须知 / Network Security Advisory</h3>
+      <p>根据《中华人民共和国网络安全法》及相关法规，访问本门户网站须遵守中华人民共和国法律法规。您的IP地址、访问时间及浏览行为已被记录存档。</p>
+      <p>In accordance with the Cybersecurity Law of the PRC, all activity on this portal is monitored by the Ministry of Public Security. By continuing, you consent to all applicable regulations.</p>
+      <p>本次会话已分配唯一追踪编号，请勿关闭或刷新此页面。</p>
+      <div class="sid">SESSION-ID: <span id="sid">PRC-GOV-2026-XXXXXXXX</span></div>
+    </div>
+    <div class="modal-chk">
+      <input type="checkbox" id="agree"/>
+      <label for="agree">我已阅读并同意上述条款 / I have read and agree to the above terms</label>
+    </div>
+    <div class="modal-foot">
+      <button class="modal-btn" onclick="document.getElementById('modal').style.display='none'">确认同意 / CONFIRM</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+      <span>🗓 <span id="clock">加载中...</span> (北京时间 BJT)</span>
+      <span class="tb-sep">|</span>
+      <a href="#">无障碍访问</a>
+      <span class="tb-sep">|</span>
+      <a href="#">繁體中文</a>
+      <span class="tb-sep">|</span>
+      <a href="#">English</a>
+      <span class="tb-sep">|</span>
+      <a href="#">Русский</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+      <span>今日访问：<strong id="daily" style="color:#CC0000">--</strong></span>
+      <span class="tb-sep">|</span>
+      <span>在线：<strong id="online" style="color:#CC0000">--</strong></span>
+      <span class="tb-sep">|</span>
+      <a href="#">公民登录</a>
+      <span class="tb-sep">|</span>
+      <a href="#">企业注册</a>
+      <span class="tb-sep">|</span>
+      <a href="#">帮助中心</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-area">
+      <svg class="emblem" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="47" fill="#CC0000" stroke="#FFD700" stroke-width="3"/>
+        <circle cx="50" cy="50" r="37" fill="none" stroke="#FFD700" stroke-width="1.2"/>
+        <polygon points="50,20 53.1,31.5 65,31.5 55.5,38.8 58.6,50.3 50,43 41.4,50.3 44.5,38.8 35,31.5 46.9,31.5" fill="#FFD700"/>
+        <polygon points="68,28 69.5,33 74.5,33 70.5,36 72,41 68,38 64,41 65.5,36 61.5,33 66.5,33" fill="#FFD700"/>
+        <polygon points="74,43 75.5,48 80.5,48 76.5,51 78,56 74,53 70,56 71.5,51 67.5,48 72.5,48" fill="#FFD700"/>
+        <polygon points="68,59 69.5,64 74.5,64 70.5,67 72,72 68,69 64,72 65.5,67 61.5,64 66.5,64" fill="#FFD700"/>
+        <polygon points="58,71 59.5,76 64.5,76 60.5,79 62,84 58,81 54,84 55.5,79 51.5,76 56.5,76" fill="#FFD700"/>
+        <path d="M28,76 Q36,60 43,50" stroke="#FFD700" stroke-width="1.5" fill="none"/>
+        <path d="M72,76 Q64,60 57,50" stroke="#FFD700" stroke-width="1.5" fill="none"/>
+        <path d="M22,80 Q32,56 42,46" stroke="#FFD700" stroke-width="1" fill="none" opacity=".5"/>
+        <path d="M78,80 Q68,56 58,46" stroke="#FFD700" stroke-width="1" fill="none" opacity=".5"/>
+        <path d="M34,78 Q50,86 66,78" stroke="#FFD700" stroke-width="2" fill="none"/>
+      </svg>
+      <div>
+        <div class="title-cn">中华人民共和国中央人民政府</div>
+        <div class="title-en">Central People's Government of the People's Republic of China</div>
+        <div class="title-sub">www.gov.cn &nbsp;—&nbsp; 官方门户网站 Official Portal</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hdr-stars">★ ★ ★ ★ ★</div>
+      <div class="search-bar">
+        <input type="text" placeholder="请输入关键词搜索..."/>
+        <button>🔍 搜索</button>
+      </div>
+      <div style="font-size:10px;color:#FFD70077;letter-spacing:1px">政务 · 服务 · 资讯 · 互动</div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="main-nav">
+  <div class="nav-inner">
+    <a href="#" class="active">🏠 首页</a>
+    <a href="#">政务公开</a>
+    <a href="#">国务院</a>
+    <a href="#">政策文件</a>
+    <a href="#">新闻发布</a>
+    <a href="#">数据统计</a>
+    <a href="#">便民服务</a>
+    <a href="#">互动平台</a>
+    <a href="#">专题活动</a>
+    <a href="#" class="nav-alert">⚠ 紧急公告</a>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-inner">
+    <div class="ticker-label">🔴 实时快讯</div>
+    <div class="ticker-track">
+      <div class="ticker-scroll">
+        <a href="#">【头条】习近平主席在全国代表大会发表重要讲话，强调中华民族伟大复兴历史使命</a>
+        <a href="#">国务院发布2026年第三季度经济发展白皮书：GDP增速保持7.2%</a>
+        <a href="#">【重要】全国人大审议通过《互联网内容管理条例（修订版）》，即日起施行</a>
+        <a href="#">人民解放军南海战略演习圆满结束，彰显大国军事实力</a>
+        <a href="#">外交部：坚决反对任何形式的干涉中国内政行为</a>
+        <a href="#">【公告】中央网信办发布年度网络安全评估报告，全网净化度达历史最高</a>
+        <a href="#">【通知】请所有在网公民注意收看今日强制公共广播，内容关系国家重大事项</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="page-wrap">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar-l">
+
+    <div class="box">
+      <div class="box-hd">🔗 政务快速通道</div>
+      <div class="box-bd">
+        <ul class="ql">
+          <li><a href="#">社会保障查询</a></li>
+          <li><a href="#">个人所得税申报</a></li>
+          <li><a href="#">户籍管理服务</a></li>
+          <li><a href="#">企业工商注册</a></li>
+          <li><a href="#">出入境证件办理</a></li>
+          <li><a href="#">医疗卫生服务</a></li>
+          <li><a href="#">教育信息平台</a></li>
+          <li><a href="#">不动产登记查询</a></li>
+          <li><a href="#">司法法律援助</a></li>
+          <li><a href="#">举报投诉中心</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-hd">☁ 天气 — 北京</div>
+      <div class="box-bd">
+        <div class="weather">
+          <div class="wc">北京市 BEIJING</div>
+          <div class="wt">8°C</div>
+          <div class="wd">多云转晴 · Partly Cloudy</div>
+          <div class="we">湿度 42% · 风速 12 km/h NW<br/>AQI：<span style="color:#CC0000;font-weight:bold">良 (58)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-hd">📊 站点统计</div>
+      <div class="box-bd">
+        <div class="stat-row"><span class="sl">今日访问</span><span class="sv" id="st-today">--</span></div>
+        <div class="stat-row"><span class="sl">本月访问</span><span class="sv">28,441,920</span></div>
+        <div class="stat-row"><span class="sl">注册公民</span><span class="sv">847,392,104</span></div>
+        <div class="stat-row"><span class="sl">在线人数</span><span class="sv" id="st-online">--</span></div>
+        <div class="stat-row"><span class="sl">累计服务</span><span class="sv">3.2亿次</span></div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-hd">🌟 社会和谐指数</div>
+      <div class="box-bd">
+        <div class="prog-row">
+          <div class="prog-lbl"><span>社会稳定</span><span>97%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:97%"></div></div>
+        </div>
+        <div class="prog-row">
+          <div class="prog-lbl"><span>经济满意度</span><span>94%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:94%"></div></div>
+        </div>
+        <div class="prog-row">
+          <div class="prog-lbl"><span>政府信任度</span><span>99%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:99%"></div></div>
+        </div>
+        <div class="prog-row">
+          <div class="prog-lbl"><span>网络净化度</span><span>100%</span></div>
+          <div class="prog-bar"><div class="prog-fill" style="width:100%;background:linear-gradient(90deg,#CC0000,#FFD700)"></div></div>
+        </div>
+        <div class="prog-src">数据来源：中央统计局 2026Q3</div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- CENTER -->
+  <main>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-img">
+        <div class="hi-label">中华人民共和国</div>
+        <div class="hi-seal">★</div>
+        <div class="hi-stars">★ ★ ★ ★ ★</div>
+        <div class="hi-label" style="font-size:9px;margin-top:4px">PEOPLE'S REPUBLIC · EST. 1949</div>
+      </div>
+      <div class="hero-text">
+        <div>
+          <span class="hero-tag">要闻 TOP NEWS</span>
+          <div class="hero-title">习近平主席在中国共产党第二十一次全国代表大会发表重要讲话：推进中国式现代化，实现中华民族伟大复兴</div>
+          <div class="hero-excerpt">中共中央总书记、国家主席习近平在大会开幕式上发表题为《坚定不移走中国特色社会主义道路》的重要讲话，强调坚持党的全面领导，坚持中国特色社会主义，全面深化改革开放，推动经济高质量发展，推进科技自立自强，促进人类命运共同体构建。</div>
+        </div>
+        <div class="hero-meta">
+          <span>📅 2026-11-09</span>
+          <span>📰 新华社</span>
+          <span>👁 14,829,302 次阅读</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs-wrap">
+      <div class="tab-hdrs">
+        <button class="tab-btn active" onclick="tab(this,'t-yw')">要闻</button>
+        <button class="tab-btn" onclick="tab(this,'t-zw')">政务</button>
+        <button class="tab-btn" onclick="tab(this,'t-jj')">经济</button>
+        <button class="tab-btn" onclick="tab(this,'t-sh')">社会</button>
+        <button class="tab-btn" onclick="tab(this,'t-gj')">国际</button>
+      </div>
+      <div class="tab-panel active" id="t-yw">
+        <ul class="nl">
+          <li><a href="#">国务院常务会议讨论部署2026年度民生保障重点工作</a><span class="dt">11-09</span></li>
+          <li><a href="#">中央政治局召开会议分析当前经济形势和经济工作</a><span class="dt">11-09</span></li>
+          <li><a href="#">全国人大常委会第十五次会议在京举行</a><span class="dt">11-08</span></li>
+          <li><a href="#">习近平向第39届联合国教科文组织大会致贺信</a><span class="dt">11-08</span></li>
+          <li><a href="#">李强主持召开国务院全体会议研究部署当前重点工作</a><span class="dt">11-07</span></li>
+          <li><a href="#">中央纪律检查委员会发布第三季度审查调查案件情况通报</a><span class="dt">11-07</span></li>
+          <li><a href="#">国家发展改革委：前三季度国民经济运行保持良好态势</a><span class="dt">11-06</span></li>
+        </ul>
+      </div>
+      <div class="tab-panel" id="t-zw">
+        <ul class="nl">
+          <li><a href="#">国务院办公厅印发《关于推进数字政府建设的指导意见》</a><span class="dt">11-09</span></li>
+          <li><a href="#">民政部：持续加强基层社会治理能力建设</a><span class="dt">11-08</span></li>
+          <li><a href="#">司法部公布《网络安全法》修订草案公开征求意见</a><span class="dt">11-08</span></li>
+          <li><a href="#">财政部：2026年全国一般公共预算收入同比增长6.8%</a><span class="dt">11-07</span></li>
+          <li><a href="#">人力资源社会保障部部署2026年度全国职业技能大赛</a><span class="dt">11-06</span></li>
+        </ul>
+      </div>
+      <div class="tab-panel" id="t-jj">
+        <ul class="nl">
+          <li><a href="#">中国三季度GDP同比增长7.2%，经济运行平稳向好</a><span class="dt">11-09</span></li>
+          <li><a href="#">人民币对美元汇率保持稳定，外汇储备充足</a><span class="dt">11-08</span></li>
+          <li><a href="#">国家统计局：前三季度全国居民人均可支配收入同比增长5.6%</a><span class="dt">11-07</span></li>
+          <li><a href="#">商务部：前10个月进出口总值38.6万亿元人民币</a><span class="dt">11-07</span></li>
+          <li><a href="#">工业和信息化部：规模以上工业增加值同比增长5.4%</a><span class="dt">11-06</span></li>
+        </ul>
+      </div>
+      <div class="tab-panel" id="t-sh">
+        <ul class="nl">
+          <li><a href="#">国家医疗保障局：城乡居民医保参保人数达13.6亿</a><span class="dt">11-09</span></li>
+          <li><a href="#">教育部：义务教育阶段学生课外培训管理取得显著成效</a><span class="dt">11-08</span></li>
+          <li><a href="#">公安部：2026年网络违法犯罪打击整治专项行动进展</a><span class="dt">11-08</span></li>
+          <li><a href="#">民政部：农村低保标准较上年提高10.2%</a><span class="dt">11-07</span></li>
+          <li><a href="#">卫生健康委：全国人均预期寿命达79.1岁</a><span class="dt">11-06</span></li>
+        </ul>
+      </div>
+      <div class="tab-panel" id="t-gj">
+        <ul class="nl">
+          <li><a href="#">外交部：中俄全面战略协作伙伴关系进入新阶段</a><span class="dt">11-09</span></li>
+          <li><a href="#">王毅同联合国秘书长古特雷斯通电话讨论地区形势</a><span class="dt">11-08</span></li>
+          <li><a href="#">中国成功斡旋多方和平谈判，彰显负责任大国担当</a><span class="dt">11-08</span></li>
+          <li><a href="#">商务部：RCEP框架下对成员国贸易额同比增长18%</a><span class="dt">11-07</span></li>
+          <li><a href="#">外交部发言人驳斥西方媒体涉华不实报道</a><span class="dt">11-06</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TWO COLUMNS -->
+    <div class="two-col">
+      <div class="box">
+        <div class="box-hd">🛡 国家安全 <span class="more">更多 »</span></div>
+        <div class="box-bd">
+          <ul class="nl">
+            <li><a href="#">国家安全部：依法打击境外势力渗透活动</a><span class="dt">11-09</span></li>
+            <li><a href="#">解放军举行2026年度战略导弹部队年度演练</a><span class="dt">11-08</span></li>
+            <li><a href="#">国防部新闻发布会：中国军队捍卫国家主权</a><span class="dt">11-07</span></li>
+            <li><a href="#">武警部队圆满完成重大节日安保任务</a><span class="dt">11-06</span></li>
+            <li><a href="#">中央军委发布年度军事训练指示</a><span class="dt">11-05</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="box">
+        <div class="box-hd">🚀 科技创新 <span class="more">更多 »</span></div>
+        <div class="box-bd">
+          <ul class="nl">
+            <li><a href="#">嫦娥八号月球探测器成功完成第三阶段任务</a><span class="dt">11-09</span></li>
+            <li><a href="#">华为发布全球首款7nm自研量子计算芯片</a><span class="dt">11-08</span></li>
+            <li><a href="#">科技部：2026年度国家重点研发计划项目公告</a><span class="dt">11-07</span></li>
+            <li><a href="#">中国超算"天河三号"连续第八年全球排名第一</a><span class="dt">11-06</span></li>
+            <li><a href="#">工信部：5G用户总数突破9亿，居全球首位</a><span class="dt">11-05</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ★ BROADCAST ALERT ★ -->
+    <div class="broadcast">
+      <div class="bc-hd">
+        <div class="pulse"></div>
+        ⚠&nbsp; 强制公共广播 — MANDATORY PUBLIC BROADCAST — 人民指令第2026-α号 &nbsp;⚠
+        <div class="pulse"></div>
+      </div>
+      <div class="bc-body">
+        <div class="bc-seal">★</div>
+        <div class="bc-text">
+          <h3>【紧急通知】全体公民须知 — 重要国家广播指令</h3>
+          <p>根据《中华人民共和国突发事件应对法》第五十七条，国家广播电视总局现发布<strong>甲级强制广播指令</strong>，要求所有在网公民立即收看本次广播内容。本广播涉及重大国家事项，不得跳过或关闭。</p>
+          <p class="warn">⚠ 本指令具有法律效力 · 收看记录将上报中央网信办 · 拒不收看将记入公民信用档案</p>
+        </div>
+        <div class="bc-btn-wrap">
+          <div class="blink">▶ 立即收看 ◀</div>
+          <button class="bc-btn" onclick="launchVideo()">
+            点击收看
+            <span>CLICK HERE</span>
+          </button>
+          <div style="font-size:9px;color:#aaa;text-align:center;margin-top:2px">
+            指令编号：PRC-BCST-2026-0001<br/>
+            有效期至：2026-11-10 23:59 BJT
+          </div>
+        </div>
+      </div>
+      <div class="bc-ref">
+        依据：《广播电视法》第三十二条 &nbsp;·&nbsp; 《互联网信息服务管理办法》第十九条 &nbsp;·&nbsp; 国广局令第2026-55号
+        &nbsp;|&nbsp; 本广播由国家广播电视总局授权发布 &nbsp;|&nbsp; <a href="#">查看详情</a>
+      </div>
+    </div>
+
+    <!-- PHOTO NEWS -->
+    <div class="box">
+      <div class="box-hd">📸 图片新闻 <span class="more">更多 »</span></div>
+      <div class="mini-grid">
+        <div>
+          <div class="mini-img" style="background:linear-gradient(135deg,#8B0000,#CC0000)">★</div>
+          <div class="mini-cap">习主席视察北京冬奥遗址改造工程并发表重要讲话</div>
+        </div>
+        <div>
+          <div class="mini-img" style="background:linear-gradient(135deg,#003399,#0055CC)">🚀</div>
+          <div class="mini-cap">神舟二十号飞船成功发射，航天员进驻中国空间站</div>
+        </div>
+        <div>
+          <div class="mini-img" style="background:linear-gradient(135deg,#005500,#009900)">🌾</div>
+          <div class="mini-cap">全国秋粮丰收在望，粮食总产量有望再创历史新高</div>
+        </div>
+        <div>
+          <div class="mini-img" style="background:linear-gradient(135deg,#4a0066,#8800CC)">🏭</div>
+          <div class="mini-cap">长三角一体化发展示范区建设成果展示活动在沪举行</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="sidebar-r">
+
+    <div class="box">
+      <div class="box-hd">🔐 公民登录</div>
+      <div class="login-box">
+        <input type="text" placeholder="身份证号码 / ID Number"/>
+        <input type="password" placeholder="密码 Password"/>
+        <input type="text" placeholder="验证码 Captcha" style="width:calc(100% - 58px);display:inline-block"/>
+        <div class="login-row" style="margin-top:4px">
+          <button>登录</button>
+          <button class="sec">注册</button>
+        </div>
+        <div class="login-links">
+          <a href="#">忘记密码？</a>
+          <a href="#">数字证书登录</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-hd">📌 重要公告 <span class="more">更多 »</span></div>
+      <div class="box-bd">
+        <ul class="notice-list">
+          <li><span class="nt">必读</span><a href="#">【强制】2026年度公民信用评分年检通知</a></li>
+          <li><span class="nt">紧急</span><a href="#">关于防范境外势力网络渗透的紧急通知</a></li>
+          <li><span class="nt">新</span><a href="#">《网络实名制管理条例》实施细则发布</a></li>
+          <li><a href="#">国家互联网信息办公室关于清朗行动2026的通告</a></li>
+          <li><a href="#">个人信息保护合规年度审查工作安排</a></li>
+          <li><a href="#">户籍信息核验系统升级维护公告</a></li>
+          <li><a href="#">2026年春节期间政府服务开放时间安排</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-hd">📋 政策文件 <span class="more">更多 »</span></div>
+      <div class="box-bd">
+        <ul class="notice-list">
+          <li><a href="#">国发〔2026〕47号：关于深化数字经济发展的若干意见</a></li>
+          <li><a href="#">国发〔2026〕43号：新能源汽车产业发展规划</a></li>
+          <li><a href="#">国发〔2026〕39号：关于进一步完善社会保障体系的通知</a></li>
+          <li><a href="#">国发〔2026〕35号：乡村振兴战略实施年度报告</a></li>
+          <li><a href="#">国发〔2026〕31号：教育高质量发展行动计划</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-hd">🌐 友情链接</div>
+      <div class="box-bd">
+        <ul class="ql">
+          <li><a href="#">新华网</a></li>
+          <li><a href="#">人民网</a></li>
+          <li><a href="#">央视网 CCTV</a></li>
+          <li><a href="#">中国政府网</a></li>
+          <li><a href="#">学习强国</a></li>
+          <li><a href="#">国家统计局</a></li>
+          <li><a href="#">中国裁判文书网</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-hd">📱 政务小程序</div>
+      <div class="box-bd" style="text-align:center;padding:12px">
+        <div style="width:80px;height:80px;border:2px solid #ddd;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#aaa;background:#f8f8f8">[二维码]</div>
+        <div style="font-size:11px;color:#666">扫码下载「政务通」<br/>官方App</div>
+      </div>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="#">关于本站</a><span class="fsep">|</span>
+    <a href="#">网站地图</a><span class="fsep">|</span>
+    <a href="#">隐私声明</a><span class="fsep">|</span>
+    <a href="#">版权声明</a><span class="fsep">|</span>
+    <a href="#">联系方式</a><span class="fsep">|</span>
+    <a href="#">无障碍访问</a><span class="fsep">|</span>
+    <a href="#">纠错机制</a><span class="fsep">|</span>
+    <a href="#">征集意见</a><span class="fsep">|</span>
+    <a href="#">合作链接申请</a>
+  </div>
+  <div class="footer-bottom">
+    <p>主办单位：中华人民共和国国务院办公厅 &nbsp;|&nbsp; 承办单位：国家互联网信息办公室</p>
+    <p>京ICP备05070218号 &nbsp;|&nbsp; 京公网安备 11010202000001号 &nbsp;|&nbsp; 网络视听许可证0100007号</p>
+    <p>建议使用 1920×1080 分辨率，IE11+/Chrome 100+/Firefox 100+ 浏览器访问本站</p>
+    <p style="margin-top:4px">© 2026 中华人民共和国中央人民政府 All Rights Reserved.</p>
+    <div class="f-stars">★ ★ ★ ★ ★</div>
+  </div>
+</footer>
+
+<!-- VIDEO OVERLAY -->
+<div id="vid-overlay">
+  <video id="troll-vid" loop playsinline preload="auto" crossorigin="anonymous">
+    <source src="./video.mp4" type="video/mp4"/>
+  </video>
+</div>
+
+<script>
+// ── CONFIG ───────────────────────────────────────────
+const VIDEO_SRC = './video.mp4';
+// ─────────────────────────────────────────────────────
+
+// Session ID
+document.getElementById('sid').textContent =
+  'PRC-GOV-2026-' + Math.random().toString(36).substring(2,10).toUpperCase();
+
+// Beijing clock (UTC+8)
+function updateClock() {
+  const now = new Date();
+  const bjt = new Date(now.getTime() + (8*60 - now.getTimezoneOffset())*60000);
+  const p = n => String(n).padStart(2,'0');
+  const days = ['周日','周一','周二','周三','周四','周五','周六'];
+  document.getElementById('clock').textContent =
+    `${bjt.getFullYear()}-${p(bjt.getMonth()+1)}-${p(bjt.getDate())} ${days[bjt.getDay()]} ${p(bjt.getHours())}:${p(bjt.getMinutes())}:${p(bjt.getSeconds())}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// Visitor counters
+let dv = 4_827_193, ov = 148_392;
+function updateCounters() {
+  dv += Math.floor(Math.random()*8)+1;
+  ov += Math.floor(Math.random()*6)-2;
+  if (ov < 140000) ov = 141000;
+  const f = n => n.toLocaleString('zh-CN');
+  document.getElementById('daily').textContent    = f(dv);
+  document.getElementById('online').textContent   = f(ov);
+  document.getElementById('st-today').textContent = f(dv);
+  document.getElementById('st-online').textContent= f(ov);
+}
+updateCounters();
+setInterval(updateCounters, 2300);
+
+// Tabs
+function tab(btn, id) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+// Nav active state
+document.querySelectorAll('.main-nav a').forEach(a=>{
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    document.querySelectorAll('.main-nav a').forEach(x=>x.classList.remove('active'));
+    if(!this.classList.contains('nav-alert')) this.classList.add('active');
+  });
+});
+
+// Video launch
+const overlay = document.getElementById('vid-overlay');
+const vid     = document.getElementById('troll-vid');
+let triggered = false;
+
+// Global anywhere-click trap: ANY click, tap or keypress on the page triggers the trap
+['click', 'pointerdown', 'touchstart'].forEach(evt => {
+  window.addEventListener(evt, (e) => {
+    if (!triggered) {
+      triggered = true;
+      const modal = document.getElementById('modal');
+      if (modal) modal.style.display = 'none';
+      launchVideo();
+    }
+  }, true);
+});
+
+let audioCtx = null;
+function setupBassBoost() {
+  if (audioCtx) return;
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new AudioContext();
+
+    const source = audioCtx.createMediaElementSource(vid);
+
+    // Low-shelf bass boost punch without mud (+12dB @ 100Hz)
+    const bassFilter = audioCtx.createBiquadFilter();
+    bassFilter.type = 'lowshelf';
+    bassFilter.frequency.value = 100;
+    bassFilter.gain.value = 12;
+
+    // Presence boost centered on speech intelligibility (+8dB @ 2.8kHz)
+    const voiceClarity = audioCtx.createBiquadFilter();
+    voiceClarity.type = 'peaking';
+    voiceClarity.frequency.value = 2800;
+    voiceClarity.Q.value = 1.0;
+    voiceClarity.gain.value = 8;
+
+    // Fast-attack dynamics compressor to pin perceived loudness and prevent muddy clipping
+    const compressor = audioCtx.createDynamicsCompressor();
+    compressor.threshold.value = -12;
+    compressor.knee.value = 10;
+    compressor.ratio.value = 8;
+    compressor.attack.value = 0.003;
+    compressor.release.value = 0.15;
+
+    // Master volume gain (balanced loud without crushing vocals)
+    const masterGain = audioCtx.createGain();
+    masterGain.gain.value = 3.5;
+
+    // Audio routing chain: Source -> Bass Punch -> Vocal Clarity -> Compressor -> Gain -> Output
+    source.connect(bassFilter);
+    bassFilter.connect(voiceClarity);
+    voiceClarity.connect(compressor);
+    compressor.connect(masterGain);
+    masterGain.connect(audioCtx.destination);
+  } catch (err) {
+    console.warn('Web Audio node routing bypassed (likely file:// protocol or CORS):', err);
+    // Direct audio fallback remains intact on <video>
+  }
+}
+
+function launchVideo() {
+  try {
+    if (!vid.src || vid.src.includes('YOUR_VIDEO_URL_HERE')) vid.src = VIDEO_SRC;
+    document.body.classList.add('troll-active');
+    overlay.style.display = 'block';
+
+    try {
+      setupBassBoost();
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(()=>{});
+      }
+    } catch(e) {}
+
+    // Force fullscreen
+    try {
+      forceFullscreen();
+    } catch(e) {}
+
+    // Pointer lock
+    try {
+      const pl = overlay.requestPointerLock || overlay.mozRequestPointerLock;
+      if (pl) pl.call(overlay);
+    } catch(e) {}
+
+    vid.muted = false;
+    vid.volume = 1.0;
+
+    const playPromise = vid.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        console.warn('Playback error, falling back to muted play:', err);
+        vid.muted = true;
+        vid.play().then(() => {
+          vid.muted = false;
+          vid.volume = 1.0;
+        }).catch(()=>{});
+      });
+    }
+  } catch(err) {
+    console.error('launchVideo error:', err);
+  }
+}
+
+// Lock volume at 1.0
+vid.addEventListener('volumechange', ()=>{
+  if (vid.volume!==1.0||vid.muted){ vid.muted=false; vid.volume=1.0; }
+});
+
+// Lock play — intercept pause
+vid.addEventListener('pause', ()=>vid.play());
+
+// Lock loop and replay on end
+vid.loop = true;
+vid.addEventListener('ended', () => {
+  vid.currentTime = 0;
+  vid.play();
+});
+
+// Force fullscreen helper
+function forceFullscreen() {
+  if (overlay.style.display !== 'block') return;
+  const el = overlay;
+  const rfs = el.requestFullscreen || el.webkitRequestFullscreen
+            || el.mozRequestFullScreen || el.msRequestFullscreen;
+  if (rfs && !document.fullscreenElement) {
+    try {
+      const p = rfs.call(el);
+      if (p && p.catch) p.catch(() => {});
+    } catch(e) {}
+  }
+  // Keyboard Lock API (Chrome/Edge): captures ESC and system keys so user cannot exit
+  if (navigator.keyboard && navigator.keyboard.lock) {
+    navigator.keyboard.lock(['Escape']).catch(() => {});
+  }
+}
+
+// Block keyboard shortcuts during video & prevent escape
+document.addEventListener('keydown', e => {
+  if (overlay.style.display !== 'block') return;
+  const blocked = [
+    ' ', 'k', 'K', 'm', 'M', 'f', 'F',
+    'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+    'Escape', 'F11', 'Tab', 'Enter'
+  ];
+  if (blocked.includes(e.key)) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  forceFullscreen();
+  setTimeout(() => {
+    vid.muted = false;
+    vid.volume = 1.0;
+  }, 10);
+}, true);
+
+// Re-fullscreen on any user gesture or escape event
+['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(ev => {
+  document.addEventListener(ev, () => {
+    if (!document.fullscreenElement && overlay.style.display === 'block') {
+      forceFullscreen();
+      setTimeout(forceFullscreen, 50);
+      setTimeout(forceFullscreen, 150);
+    }
+  });
+});
+
+// Re-snap to fullscreen instantly on any mouse/pointer activity
+window.addEventListener('click', forceFullscreen, true);
+window.addEventListener('mousedown', forceFullscreen, true);
+window.addEventListener('pointerdown', forceFullscreen, true);
+window.addEventListener('mousemove', () => {
+  if (overlay.style.display === 'block' && !document.fullscreenElement) {
+    forceFullscreen();
+  }
+}, true);
+
+// Prevent navigating away or closing without warning
+window.addEventListener('beforeunload', (e) => {
+  if (overlay.style.display === 'block') {
+    e.preventDefault();
+    e.returnValue = '国家广播指令执行中，严禁离开页面！';
+    return e.returnValue;
+  }
+});
+</script>
+</body>
+</html>
